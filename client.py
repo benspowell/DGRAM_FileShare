@@ -13,11 +13,16 @@ if (command=="send"):
     s.sendto(message, (recipient, PORT))
 elif (command=="recieve"):
     while True:  
-        s.bind(('', PORT))
-        data, addr = s.recvfrom(1024)  
+        # s.bind(('', PORT))
+        data = s.recv(1024)  
         print "Received ->", data
-        print "from ", addr
+        # print "from ", addr
+        # s.close
+        # s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
         break
+
+
+
 
 s.close()
 
