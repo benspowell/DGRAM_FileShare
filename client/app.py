@@ -11,22 +11,6 @@ server_addr = raw_input("where is your filing cabinet? ")
 msg = ""
 recipient = ""
 
-command = raw_input("what do you want to do?: ")
-
-if (command=="send"):
-    msg = raw_input("what do you want to say? ")
-    recipient = raw_input("to whom? ")
-    s.sendto(msg, (recipient, PORT))
-elif (command=="recieve"):
-    while True:  
-        s.bind(('', PORT))
-        data,addr = s.recv(1024)  
-        print "Received ->", data
-        print "from ", addr
-        s.close
-        s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-        break
-elif (command == "register"):
     msg = "iam\n" + raw_input("who are you? ")
     # recipient = server_addr
     # s.sendto(msg, (recipient, PORT))
@@ -38,6 +22,30 @@ elif (command == "register"):
 
     print "your files: ", files
     raw_input("\nwhen you're ready to share, press enter...")
+    
+    filestring=""
+    for f in files 
+        filestring += f + "\\"
+    msg = "ihave\n" + filestring + "/"
+    print msg
+
+while True:
+    command = raw_input("what do you want to do?: ")
+
+    if (command=="send"):
+        msg = raw_input("what do you want to say? ")
+        recipient = raw_input("to whom? ")
+        s.sendto(msg, (recipient, PORT))
+    elif (command=="recieve"):
+        while True:  
+            s.bind(('', PORT))
+            data,addr = s.recv(1024)  
+            print "Received ->", data
+            print "from ", addr
+            s.close
+            s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+            break
+    elif (command == "register"):
 
 
 s.close()
