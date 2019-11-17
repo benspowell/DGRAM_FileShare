@@ -1,7 +1,7 @@
 import socket
 
 HOST = ''
-PORT = 5000
+PORT = 1998
 clientsock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM) # UDP uses Datagram, but not stream
 clientsock.bind((HOST, PORT))
 print "Waiting for packets..."
