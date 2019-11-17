@@ -13,6 +13,7 @@ if (command=="send"):
     s.sendto(message, (recipient, PORT))
 elif (command=="recieve"):
     while True:  
+        s.bind((HOST, PORT))
         data, addr = s.recvfrom(1024)  
         print "Received ->", data
         print "from ", addr
