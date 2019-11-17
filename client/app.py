@@ -24,7 +24,7 @@ print "your files: ", files
 raw_input("\nwhen you're ready to share, press enter...")
 
 filestring=""
-for f in files 
+for f in files:
     filestring += f + "\\"
 msg = "ihave\n" + filestring + "/"
 print msg
