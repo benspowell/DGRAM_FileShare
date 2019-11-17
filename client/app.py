@@ -45,7 +45,6 @@ while True:
             s.close
             s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
             break
-    elif (command == "register"):
 
 
 s.close()
