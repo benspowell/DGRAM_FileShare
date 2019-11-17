@@ -32,11 +32,12 @@ elif (command == "register"):
     # s.sendto(msg, (recipient, PORT))
     # response = s.recv(1024)
 
-    print "in your local filesystem, you have a folder called MyDrawer."
-    print "all files in your drawer will be shared with the cabinet directory."
+    print "\nIn your local filesystem, you have a folder called MyDrawer."
+    print "\nAll files in your drawer will be shared with the cabinet directory.\n"
     files = [f for f in listdir("MyDrawer/") if isfile(join("MyDrawer/", f))]
-    print "your files: ", files
 
+    print "your files: ", files
+    raw_input("\nwhen you're ready to share, press enter...")
 
 
 s.close()
