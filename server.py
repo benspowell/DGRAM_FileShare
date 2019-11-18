@@ -8,6 +8,7 @@ print "Waiting for packets..."
 
 while True:  
     data, addr = clientsock.recvfrom(1024)  
-    print "Received ->", data  
+    print
+    print "Received:\n", data  
     clientsock.sendto("you said:\n"+data, addr)  
     break
