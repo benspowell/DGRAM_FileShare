@@ -28,19 +28,25 @@ filestring=""
 for f in files:
     filestring += f + "\\"
 msg = "ihave\n" + filestring + "/"
+
+#message logging
+print "\n------sending------"
 print msg
+print "-------------------\n"
+#message logging
 
 while True:
-    print "Availiable options:"
+    print "\nAvailiable options:"
     print "     l (list): ask the cabinet directory for a list of availiable files."
     print "     s (search): check for a certain file in the cabinet."
-    print "     g (get): get a file from a drawer."
+    print "     g (grab): get a file from a drawer."
     print "     u (update): update your drawer, sharing any new files with the cabinet."
     print "     o (open): open your drawer, allowing people to get files from you."
     
     command = raw_input("\n     >")
+    print
 
-    if (command=="o"):
+    if (command=="o"): # OPEN COMMAND: waits for another user to request a file
         while True:
             print "your drawer is now open for other clients to get your files"
             print "type 'close' to close your drawer."
@@ -57,28 +63,64 @@ while True:
             print "sent file x to ", addr
 
             break
-    elif (command == "l"):
+    elif (command == "l"): # LIST COMMAND: ask server to list files
         msg = "list"
         recipient = server_addr
+
+        #message logging
+        print "\n-----sending------"
+        print msg
+        print "-------------------\n"
+        #message logging
+
         s.sendto(msg, (recipient, PORT))
 
         response = s.recv(1024)
+
+        #message logging
+        print "\n-----recieved------"
         print response 
-    elif (command == "s"):
+        print "-------------------\n"
+        #message logging
+    elif (command == "s"): # SEARCH COMMAND: ask server to search for a certain file
         msg = "doyouhave\n" + raw_input("what filename do you want to check for?")
         recipient = server_addr
+
+        #message logging
+        print "\n------sending------"
+        print msg
+        print "-------------------\n"
+        #message logging
+
         s.sendto(msg, (recipient, PORT))
 
         response = s.recv(1024)
-        print response
-    elif (command == "g"):
+
+        #message logging
+        print "\n-----recieved------"
+        print response 
+        print "-------------------\n"
+        #message logging
+    elif (command == "g"): # GRAB COMMAND: ask server for file location, then try to get file
         msg = "whereis\n" + raw_input("what filename do you want to get")
         recipient = server_addr
+
+        #message logging
+        print "\n-----sending------"
+        print msg
+        print "-------------------\n"
+        #message logging
+
         s.sendto(msg, (recipient, PORT))
 
         response = s.recv(1024)
-        print response
-    elif (command == "u"):
+
+        #message logging
+        print "\n-----recieved------"
+        print response 
+        print "-------------------\n"
+        #message logging
+    elif (command == "u"): # UPDATE COMMAND: update this user's shared files
         print "\nAll files in your drawer will be shared with the cabinet directory.\n"
         files = [f for f in listdir("MyDrawer/") if isfile(join("MyDrawer/", f))]
         
@@ -92,10 +134,22 @@ while True:
         
         msg = "ihave\n" + filestring + "/"
         recipient = server_addr
+
+        #message logging
+        print "\n-----sending------"
+        print msg
+        print "-------------------\n"
+        #message logging
+
         s.sendto(msg, (recipient, PORT))
 
         response = s.recv(1024)
-        print response
-        
+
+        #message logging
+        print "\n-----recieved------"
+        print response 
+        print "-------------------\n"
+        #message logging
+
 s.close()
 
