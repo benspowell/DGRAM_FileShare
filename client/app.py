@@ -2,8 +2,10 @@ import socket
 from os import listdir
 from os.path import isfile, join
 
+HOST= ''
 PORT = 1998           # The same port as used by the server
 s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM) # UDP uses Datagram, but not stream
+s.bind((HOST, PORT))
 
 print "Welcome!"
 server_addr = raw_input("where is your filing cabinet? ")
@@ -51,7 +53,6 @@ while True:
             print "your drawer is now open for other clients to get your files"
             print "type 'close' to close your drawer."
 
-            # s.bind(('', PORT))
             response, addr = s.recvfrom(1024)  
             #message logging
             print "\n-----recieved------"
