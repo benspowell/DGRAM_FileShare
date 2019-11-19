@@ -60,19 +60,21 @@ while True:
             print "-------------------\n"
             #message logging
 
-            #message logging
-            print "\n-----sending------"
-            print msg
-            print "-------------------\n"
-            #message logging
-            s.sendto(msg, (recipient, PORT))
-
+           
             s.close
             s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
             
             msg = "take\n"+"length\n"+"filedata"
             recipient = addr
-            s.sendto(msg, recipient)
+          
+	    #message logging
+            print "\n-----sending------"
+            print msg
+            print "-------------------\n"
+            #message logging
+
+
+	    s.sendto(msg, recipient)
             print "sent file x to ", addr
             break
     elif (command == "l"): # LIST COMMAND: ask server to list files
