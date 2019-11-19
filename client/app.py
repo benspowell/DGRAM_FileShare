@@ -51,17 +51,28 @@ while True:
             print "your drawer is now open for other clients to get your files"
             print "type 'close' to close your drawer."
 
-            s.bind(('', PORT))
-            data,addr = s.recvfrom(1024)  
+            # s.bind(('', PORT))
+            response, addr = s.recvfrom(1024)  
+            #message logging
+            print "\n-----recieved------"
+            print response 
+            print "-------------------\n"
+            #message logging
+
+            #message logging
+            print "\n-----sending------"
+            print msg
+            print "-------------------\n"
+            #message logging
+            s.sendto(msg, (recipient, PORT))
 
             s.close
             s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
             
             msg = "take\n"+"length\n"+"filedata"
             recipient = addr
-            s.sendto(msg, (recipient, PORT))
+            s.sendto(msg, recipient)
             print "sent file x to ", addr
-
             break
     elif (command == "l"): # LIST COMMAND: ask server to list files
         msg = "list"
