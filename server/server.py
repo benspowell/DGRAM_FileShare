@@ -14,4 +14,3 @@ while True:
     response = "YOU SAID:\n"+data
     clientsock.sendto(response, addr)  
     print "* RESPONDED:\n", response
-    break
