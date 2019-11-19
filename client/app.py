@@ -60,9 +60,8 @@ while True:
             print "-------------------\n"
             #message logging
 
-           
-            s.close
-            s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+            # s.close
+            # s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
             
             msg = "take\n"+"length\n"+"filedata"
             recipient = addr
