@@ -22,7 +22,7 @@ Developed at the Ohio State University by Ben Powell in Fall 2019 for an assignm
   - Move into server folder:
   <br>`cd server`<br>
   - Run the program with python:
-  <br>`python server.py`<br>
+  <br>`python server.py` or `python server.py &` to run in background<br>
 
 **Or run the client-side application:**
   - Move into client folder:
@@ -31,12 +31,21 @@ Developed at the Ohio State University by Ben Powell in Fall 2019 for an assignm
   <br>`curl http://benspowell.com/assets/Ben-Powell.pdf -o MyDrawer/resume.pdf`<br>
   - Run the program with python:
   <br>`python app.py`<br>
+  - Follow the command line prompts.
   
 ## Features
 This section explains the application's basic functionality from the perspective of the client and server. It is not necessary to read this section before running the application, as the user prompts are designed to be self-explanatory.
 
 ### Server Functionality
-***TODO: WRITE THIS***
+- When the server program is started, it initializes a IP-to-filename-list dictionary and a set of all availiable files, and immediately begins listening for packets from a client.
+- When a client registers, the client's IP is added to the dictionary with an empty list.
+- When a client informs the server of which files they have, the client's list is updated to reflect that.
+- If a client requests a list or search, the server simply checks the set and responds with the answer.
+- When a client requests a filename's locations, server searches the dictionary and builds a list of IPs that claim to have that file.
+	- If no such clients are found, respond with an appropriate message and remove that file from the set.
+	- If no information is held on that file, respont with an appropriate message.
+- Client disconnects by sending a goodbye message - that client's IP is removed from the dictionary.
+- Server must be closed with CTRL-C or CTRL-D to kill the process.
 
 ### Client Functionality
  - When a user runs the client app, they are prompted to input the location of the FilingCabinet server (in the form of its IP address). 
@@ -56,7 +65,7 @@ This section explains the application's basic functionality from the perspective
  - The grab command prompts the user to enter a file name.
 	 - A request is sent to the server to obtain the list of possible IP addresses to get the file from.
 	 - After the list is recieved, the client loops through the list of IPs, requesting the file from each, until the file is recieved successfully.
- - the quit command exits the program after sending a goodbye message to the server.
+ - The quit command exits the program after sending a goodbye message to the server.
  
 ## Message Protocol
 
