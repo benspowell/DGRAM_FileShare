@@ -7,7 +7,7 @@ clientsock.bind((HOST, PORT))
 print "Waiting for packets..."
 
 IPsToFiles = {}
-allFiles = {}
+allFiles = set()
 
 while True:  
     data, addr = clientsock.recvfrom(1024)  
