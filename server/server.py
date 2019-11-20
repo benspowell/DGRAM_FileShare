@@ -73,8 +73,10 @@ while True:
     elif (header == "goodbye"):
         # Remove that client's entry
         IPsToFiles.pop(addr, None)
+        # Response that goes nowhere
+        response=""
 
     # Send and log response
     clientsock.sendto(response, addr)  
     print "----RESPONDED--------------\n", response
-    print "----TO-------------------\n", addr
+    print "----TO---------------------\n", addr

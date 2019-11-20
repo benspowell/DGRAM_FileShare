@@ -4,10 +4,10 @@ from os import listdir
 from os.path import isfile, join
 
 def sendthis(s, msg, recipient):
-    #message logging
-    print "\n------sending------"
-    print msg
-    print "-------------------\n"
+    # MESSAGE LOGGING: uncomment for debugging
+    # print "\n------sending------"
+    # print msg
+    # print "-------------------\n"
 
     s.sendto(msg, (recipient, 1998))
 
@@ -21,10 +21,17 @@ def recvresp(s):
         print "socket timed out :("
         response = false
     
-    #message logging
-    print "\n-----recieved------"
-    print response 
-    print "-------------------\n"
+    # Log messages to console
+    lst = response.split("\n")
+    if lst.pop(0)=="message":
+        print "-------MESSAGE FROM SERVER-------"
+        print lst.join("\n")
+        print "---------------------------------"
+
+    # MESSAGE LOGGING: uncomment to log all recieved messages
+    # print "\n-----recieved------"
+    # print response 
+    # print "-------------------\n"
 
     return response
 
@@ -60,8 +67,9 @@ def recvFile(s, filename):
     # Open the file for binary write
     f = open("MyDrawer/"+filename, "wb")
 
-    # Wait 7 seconds for first response.
+    # Wait 5 seconds for first response.
     s.settimeout(5.0)
+    recv = False
 
     try:
         # Recieve 1024 bytes at a time and write to file until complete
@@ -71,7 +79,11 @@ def recvFile(s, filename):
             recv = True
     except socket.timeout:
         print "socket timed out."
-        recv = False
+
+    # Print message if file was received
+    if recv:
+        print "File recieved! your file is now located in your drawer."
+        print "To share it with others, run the 'u' command and update files. "
 
     f.close
     return recv
@@ -83,12 +95,12 @@ s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM) # UDP uses Datagram, but no
 s.bind((HOST, PORT))
 
 # Get server address
-print "Welcome!"
-server_addr = raw_input("where is your filing cabinet? ")
+print "\nWelcome!"
+server_addr = raw_input("\n     Where is your filing cabinet (IP addr)? ")
 
 # Register user with server
-print "ok, registering you with "+server_addr+"\n"
-msg = "iam\n" + raw_input("     who are you? ")
+print "Ok, registering you with "+server_addr+"\n"
+msg = "iam\n" + raw_input("     Who are you? ")
 sendthis(s, msg, server_addr)
 recvresp(s)
 
@@ -168,7 +180,7 @@ while True:
             for ip in ips:
                 msg = "giveme\n"+fileiwant
                 sendthis(s,msg,ip)
-                if recvFile(s, "../recieved/"+fileiwant):
+                if recvFile(s, fileiwant):
                     break
 
     elif (command == "u"): # UPDATE COMMAND: update this user's shared files
