@@ -44,7 +44,7 @@ def recvFile(s, filename):
     f.open("MyDrawer/"+filename, "wb")
     s.settimeout(10.0)
     try:
-        data,addr = s.recvfrom(1024)
+        data,addr = s.recvfrom()
         recv = true
     except socket.timeout:
         print "socket timed out :("
@@ -52,6 +52,7 @@ def recvFile(s, filename):
 
     if recv:
         f.write(data)
+
     f.close
     return recv
 
@@ -103,7 +104,9 @@ while True:
             for i in readable:
                 if i is s:
                     response, addr = s.recvfrom()
-                    sendthis(s, "take\n"+"length\n"+"filedata", addr[0])
+                    # sendthis(s, "take\n"+"length\n"+"filedata", addr[0])
+                    fn = response.split()[1]
+                    sendFile(s, fn, addr)
                 elif i is sys.stdin:
                     command = raw_input()
                     if (command == "c"):
@@ -133,7 +136,7 @@ while True:
             for ip in ips:
                 msg = "giveme\n"+fileiwant
                 sendthis(s,msg,ip)
-                if recvFile(s):
+                if recvFile(s, "abcd"):
                     break
 
     elif (command == "u"): # UPDATE COMMAND: update this user's shared files
