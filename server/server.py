@@ -7,7 +7,6 @@ clientsock.bind((HOST, PORT))
 print "Waiting for packets..."
 
 IPsToFiles = {}
-usernamesToIPs = {}
 allFiles = []
 
 while True:  
@@ -22,9 +21,8 @@ while True:
 
     if (header == "iam"):
         # Register the user
-        usernamesToIPs[addr] = dataList[0]
         IPsToFiles[addr] = []
-        response = "message\nHello, "+dataList[1]+". Welcome to FilingCabinet."
+        response = "message\nHello, "+dataList[0]+". Welcome to FilingCabinet."
 
     elif (header == "ihave"):
         # Register the user's files
