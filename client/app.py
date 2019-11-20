@@ -49,7 +49,7 @@ recvresp(s)
 print "\nIn your local filesystem, you have a folder called MyDrawer."
 print "\nAll files in your drawer will be shared with the cabinet directory.\n"
 filestring = collectFiles()
-print "your files: ", filestring
+print "your files:\n", filestring
 
 # Send file names to server
 raw_input("\nwhen you're ready to share, press enter...")
@@ -67,15 +67,24 @@ while True:
     print
 
     if (command=="o"): # OPEN COMMAND: waits for another user to request a file
-        inputs = [serv, sys.stdin]
-        while True:
-            print "your drawer is now open for other clients to get your files!"
-            print "type 'close' to close your drawer."
+        inputs = [s, sys.stdin]
+        while inputs:
+            readable, writable, exceptional = select.select(inputs, inputs, inputs)
+            for i in readable:
+                if i is s:
+                    print "your drawer is now open for other clients to get your files!"
+                    print "type 'c' and press enter to close your drawer."
 
-            addr = recvresp(s)
-            sendthis(s, "take\n"+"length\n"+"filedata", addr)
-
-            break
+                    addr = recvresp(s)
+                    sendthis(s, "take\n"+"length\n"+"filedata", addr)
+                elif i is sys.stdin:
+                    command = raw_input()
+                    if (command == "c"):
+                        print "closing drawer..."
+                        break
+            for ex in exceptional:
+                print 'something bad happened. :('
+                break 
     elif (command == "l"): # LIST COMMAND: ask server to list files
         sendthis(s, "list", server_addr)
         recvresp(s)
@@ -94,7 +103,7 @@ while True:
         print "\nAll files in your drawer will be shared with the cabinet directory.\n"
 
         filestring = collectFiles()
-        print "your files: ", filestring
+        print "your files:\n", filestring
 
         raw_input("\nwhen you're ready to share, press enter...")
         sendthis(s, "ihave\n" + filestring, server_addr)
