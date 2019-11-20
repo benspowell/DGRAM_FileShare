@@ -37,14 +37,14 @@ def collectFiles():
 def sendFile(s, filename, recipient):
     f = open("MyDrawer/"+filename, "rb")
     fileData = f.read()
-    s.sendto(fileData,(recipient, 1998))
+    s.sendto(fileData,(recipient[0], 1998))
     f.close
 
 def recvFile(s, filename):
     f = open("MyDrawer/"+filename, "wb")
     s.settimeout(10.0)
     try:
-        data,addr = s.recvfrom()
+        data,addr = s.recv()
         recv = true
     except socket.timeout:
         print "socket timed out :("
