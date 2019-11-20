@@ -70,7 +70,7 @@ def recvFile(s, filename):
     # Wait 5 seconds for first response.
     s.settimeout(5.0)
     recv = False
-
+    data = ""
     try:
         # Recieve 1024 bytes at a time and write to file until complete
         while True:
@@ -170,11 +170,9 @@ while True:
         sendthis(s, msg, server_addr)
         
         ips = recvresp(s).split("\n")
-        # If server sent a message rather than ip list, print the message.
-        if (ips.pop(0) == "message"):
-            print ips.pop(0)
+
         # I got an IP list
-        else:
+        if (ips.pop(0) == "filelocations"):
             # Loop thru IPs in list, requesting the file. 
             # If request timed out, try next IP, otherwise all good.
             for ip in ips:
