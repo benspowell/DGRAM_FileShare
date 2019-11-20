@@ -68,17 +68,14 @@ while True:
     print
 
     if (command=="o"): # OPEN COMMAND: waits for another user to request a file
-       
-	if (command =="c"): break
-	
-	print "your drawer is now open for other clients to get your files!"
+        print "your drawer is now open for other clients to get your files!"
         print "type 'c' and press enter to close your drawer." 
-	
-	inputs = [s, sys.stdin]
         
-	while inputs:
+        inputs = [s, sys.stdin]
+            
+        while inputs:
+            if (command =="c"): break
             readable, writable, exceptional = select.select(inputs, inputs, inputs)
-
             for i in readable:
                 if i is s:
                     addr = recvresp(s)
