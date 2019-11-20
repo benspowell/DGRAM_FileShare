@@ -47,13 +47,13 @@ def recvFile(s, filename):
     f = open("MyDrawer/"+filename, "wb")
     s.settimeout(5.0)
     try:
-        while true:
+        while True:
             data,addr = s.recvfrom(buf)
             f.write(data)
-            recv = true
+            recv = True
     except socket.timeout:
         print "socket timed out."
-        recv = false
+        recv = False
 
     # if recv:
     #     f.write(data)
