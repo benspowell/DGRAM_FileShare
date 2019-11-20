@@ -71,11 +71,10 @@ while True:
         inputs = [s, sys.stdin]
         while inputs:
             readable, writable, exceptional = select.select(inputs, inputs, inputs)
+            print "your drawer is now open for other clients to get your files!"
+            print "type 'c' and press enter to close your drawer."
             for i in readable:
                 if i is s:
-                    print "your drawer is now open for other clients to get your files!"
-                    print "type 'c' and press enter to close your drawer."
-
                     addr = recvresp(s)
                     sendthis(s, "take\n"+"length\n"+"filedata", addr)
                 elif i is sys.stdin:
