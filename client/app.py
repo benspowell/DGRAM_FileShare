@@ -41,7 +41,7 @@ def sendFile(s, filename, recipient):
     f.close
 
 def recvFile(s, filename):
-    f.open("MyDrawer/"+filename, "wb")
+    f = open("MyDrawer/"+filename, "wb")
     s.settimeout(10.0)
     try:
         data,addr = s.recvfrom()
@@ -103,7 +103,7 @@ while True:
             readable, writable, exceptional = select.select(inputs, inputs, inputs)
             for i in readable:
                 if i is s:
-                    response, addr = s.recvfrom()
+                    response, addr = s.recvfrom(1024)
                     # sendthis(s, "take\n"+"length\n"+"filedata", addr[0])
                     fn = response.split()[1]
                     sendFile(s, fn, addr)
