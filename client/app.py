@@ -36,22 +36,27 @@ def collectFiles():
 
 def sendFile(s, filename, recipient):
     f = open("MyDrawer/"+filename, "rb")
-    fileData = f.read()
-    s.sendto(fileData,(recipient[0], 1998))
+    buf = 1024
+    fileData = f.read(buf)
+    while fileData:
+        s.sendto(fileData, (recipient[0],1998))
     f.close
 
 def recvFile(s, filename):
+    buf = 1024
     f = open("MyDrawer/"+filename, "wb")
-    s.settimeout(10.0)
+    s.settimeout(5.0)
     try:
-        data,addr = s.recv()
-        recv = true
+        while true:
+            data,addr = s.recvfrom(buf)
+            f.write(data)
+            recv = true
     except socket.timeout:
-        print "socket timed out :("
+        print "socket timed out."
         recv = false
 
-    if recv:
-        f.write(data)
+    # if recv:
+    #     f.write(data)
 
     f.close
     return recv
