@@ -13,12 +13,14 @@ def sendthis(s, msg, recipient):
     s.sendto(msg, (recipient, PORT))
 
 def recvresp(s):
+    s.settimeout(10.0)
     response,addr = s.recvfrom(1024)
-    #message logging
-    print "\n-----recieved------"
-    print response 
-    print "-------------------\n"
-    #message logging
+    if not response:
+        print "socket timed out :("
+    else:
+        print "\n-----recieved------"
+        print response 
+        print "-------------------\n"
     return addr
 
 def collectFiles():

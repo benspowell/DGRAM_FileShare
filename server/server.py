@@ -46,7 +46,7 @@ while True:
             # Get the file locationS TODO
             loc = ""
             for f in IPsToFiles: 
-                if IPsToFiles[f] in dataList[0]: 
+                if dataList[0] if IPsToFiles[f]: 
                     loc += f + "\n"
             response = "filelocations\n" + loc
         else:
