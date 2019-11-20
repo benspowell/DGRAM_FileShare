@@ -47,8 +47,8 @@ while True:
             loc = ""
             for f in IPsToFiles: 
                 if dataList[0] in IPsToFiles[f]: 
-                    loc += f[0] + "\n"
-            response = "filelocations\n" + loc
+                    loc += "\n"+f[0]
+            response = "filelocations" + loc
         else:
             response = "message\nI don't know that file's location!"
     clientsock.sendto(response, addr)  

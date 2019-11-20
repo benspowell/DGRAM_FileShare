@@ -14,14 +14,16 @@ def sendthis(s, msg, recipient):
 
 def recvresp(s):
     s.settimeout(10.0)
-    response,addr = s.recvfrom(1024)
-    if not response:
+    try:
+        response,addr = s.recvfrom(1024)
+    except socket.timeout:
         print "socket timed out :("
-    else:
-        print "\n-----recieved------"
-        print response 
-        print "-------------------\n"
-    return addr
+        break
+    
+    print "\n-----recieved------"
+    print response 
+    print "-------------------\n"
+    return response
 
 def collectFiles():
     files = [f for f in listdir("MyDrawer/") if isfile(join("MyDrawer/", f))]
@@ -29,7 +31,7 @@ def collectFiles():
     fileString=""
 
     for f in files:
-        fileString += f + "\n"
+        fileString += "\n" + f
 
     return fileString
 
@@ -56,7 +58,7 @@ print "your files:\n", filestring
 
 # Send file names to server
 raw_input("\nwhen you're ready to share, press enter...")
-sendthis(s, "ihave\n" + filestring, server_addr)
+sendthis(s, "ihave" + filestring, server_addr)
 recvresp(s)
 
 while True:
@@ -80,7 +82,7 @@ while True:
             readable, writable, exceptional = select.select(inputs, inputs, inputs)
             for i in readable:
                 if i is s:
-                    addr = recvresp(s)
+                    response, addr = s.recvfrom(1024)
                     sendthis(s, "take\n"+"length\n"+"filedata", addr)
                 elif i is sys.stdin:
                     command = raw_input()
@@ -100,9 +102,16 @@ while True:
         recvresp(s)
 
     elif (command == "g"): # GRAB COMMAND: ask server for file location, then try to get file
-        msg = "whereis\n" + raw_input("what filename do you want to get? ")
+        fileiwant = raw_input("what filename do you want to get? ")
+        msg = "whereis\n" + fileiwant
         sendthis(s, msg, server_addr)
-        recvresp(s)
+        
+        ips = recvresp(s).split()
+        if (ips.pop(0) == "message"):
+            print ips.pop(1)
+        else:
+            msg = "giveme\n"+fileiwant
+            recvresp()        
 
     elif (command == "u"): # UPDATE COMMAND: update this user's shared files
         print "\nAll files in your drawer will be shared with the cabinet directory.\n"
