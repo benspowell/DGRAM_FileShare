@@ -50,6 +50,7 @@ def sendFile(s, filename, recipient):
     fileData = f.read(buf)
     while fileData:
         s.sendto(fileData, (recipient[0],1998))
+        fileData = f.read(buf)
     f.close
 
 def recvFile(s, filename):
