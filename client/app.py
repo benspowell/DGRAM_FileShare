@@ -79,9 +79,9 @@ def recvFile(s, filename):
             recv = True
     except socket.timeout:
         print "socket timed out."
-
+    
     # Print message if file was received
-    if recv:
+    if data:
         print "File recieved! your file is now located in your drawer."
         print "To share it with others, run the 'u' command and update files. "
 
