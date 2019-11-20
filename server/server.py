@@ -6,6 +6,10 @@ clientsock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM) # UDP uses Datagra
 clientsock.bind((HOST, PORT))
 print "Waiting for packets..."
 
+IPsToFiles = {}
+usernamesToIPs = {}
+allFiles = []
+
 while True:  
     data, addr = clientsock.recvfrom(1024)  
     print
@@ -14,22 +18,38 @@ while True:
 
     dataList = data.split("\n")
 
-    if (dataList[0]=="iam"):
-        # Register the user TODO
+    header = dataList.pop(0)
+
+    if (header == "iam"):
+        # Register the user
+        usernamesToIPs[addr] = dataList[0]
+        IPsToFiles[addr] = []
         response = "message\nHello, "+dataList[1]+". Welcome to FilingCabinet."
-    elif (dataList[0]=="ihave"):
-        # Register the user's files TODO
+
+    elif (header == "ihave"):
+        # Register the user's files
+        for f in dataList:
+            IPsToFiles[addr].append(f)
+            allFiles.append(f)
         response = "message\nI got your files. Thanks."
-    elif (dataList[0]=="doyouhave"):
-        # Check if I have that file on record TODO
-        response = "message\nchecking..."
-    elif (dataList[0]=="list"):
-        # Send the list of files TODO
-        response = "message\nHere's the list:\na\nb\nc"
-    elif (dataList[0]=="whereis"):
-        # Make sure I have that file TODO
-        # Get the file locationS TODO
-        response = "filelocations\na\nb\nc"
-        
+    elif (header == "doyouhave"):
+        # Check if I have that file on record
+        if dataList[0] in allFiles:
+            response = "message\nYes! I have that file on record."
+        else:
+            response = "message\nNO. I do not have that file on record."
+            
+    elif (header == "list"):
+        # Send the list of files
+        response = "message\nHere's the list:\n"+'\n'.join(allFiles)
+    elif (header == "whereis"):
+        # Make sure I have that file
+        if dataList[0] in allFiles:
+            # Get the file locationS TODO
+            loc = ""
+            for f in IPsToFiles: if IPsToFiles[f] in dataList[0]: loc += f + "\n"
+            response = "filelocations\n" + loc
+        else:
+            response = "message\nI don't know that file's location!"
     clientsock.sendto(response, addr)  
     print "* RESPONDED:\n", response
