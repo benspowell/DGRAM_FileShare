@@ -167,7 +167,7 @@ while True:
             for ip in ips:
                 msg = "giveme\n"+fileiwant
                 sendthis(s,msg,ip)
-                if recvFile(s, "abcd"):
+                if recvFile(s, "../recieved/"+filename):
                     break
 
     elif (command == "u"): # UPDATE COMMAND: update this user's shared files
