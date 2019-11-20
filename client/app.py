@@ -42,9 +42,18 @@ def sendFile(s, filename, recipient):
 
 def recvFile(s, filename):
     f.open("MyDrawer/"+filename, "wb")
-    data, addr = s.recvfrom()
-    f.write(data)
+    s.settimeout(10.0)
+    try:
+        data,addr = s.recvfrom(1024)
+        recv = true
+    except socket.timeout:
+        print "socket timed out :("
+        recv = false
+
+    if recv:
+        f.write(data)
     f.close
+    return recv
 
 HOST= ''
 PORT = 1998            # The same port as used by the server
@@ -124,7 +133,7 @@ while True:
             for ip in ips:
                 msg = "giveme\n"+fileiwant
                 sendthis(s,msg,ip)
-                if recvresp(s):
+                if recvFile(s):
                     break
 
     elif (command == "u"): # UPDATE COMMAND: update this user's shared files
