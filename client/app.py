@@ -18,8 +18,7 @@ def recvresp(s):
         response,addr = s.recvfrom(1024)
     except socket.timeout:
         print "socket timed out :("
-        break
-    
+        response="" 
     print "\n-----recieved------"
     print response 
     print "-------------------\n"
@@ -83,7 +82,7 @@ while True:
             for i in readable:
                 if i is s:
                     response, addr = s.recvfrom(1024)
-                    sendthis(s, "take\n"+"length\n"+"filedata", addr)
+                    sendthis(s, "take\n"+"length\n"+"filedata", addr[0])
                 elif i is sys.stdin:
                     command = raw_input()
                     if (command == "c"):
@@ -108,10 +107,11 @@ while True:
         
         ips = recvresp(s).split()
         if (ips.pop(0) == "message"):
-            print ips.pop(1)
+            print ips.pop(0)
         else:
             msg = "giveme\n"+fileiwant
-            recvresp()        
+            sendthis(s,msg,ips.pop(0))
+            recvresp(s)     
 
     elif (command == "u"): # UPDATE COMMAND: update this user's shared files
         print "\nAll files in your drawer will be shared with the cabinet directory.\n"
