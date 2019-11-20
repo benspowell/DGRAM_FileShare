@@ -167,7 +167,7 @@ while True:
             for ip in ips:
                 msg = "giveme\n"+fileiwant
                 sendthis(s,msg,ip)
-                if recvFile(s, "../recieved/"+filename):
+                if recvFile(s, "../recieved/"+fileiwant):
                     break
 
     elif (command == "u"): # UPDATE COMMAND: update this user's shared files
@@ -180,9 +180,10 @@ while True:
         sendthis(s, "ihave\n" + filestring, server_addr)
         recvresp(s)
 
-    elif (command == ""):
+    elif (command == "q"):
         sendthis(s, "goodbye", server_addr)
         print "\ngoodbye!\n"
+        s.close
         sys.exit(0)
 
 s.close()
