@@ -2,6 +2,34 @@ import socket
 from os import listdir
 from os.path import isfile, join
 
+def sendthis(s, msg, recipient):
+    PORT = 1998
+    #message logging
+    print "\n------sending------"
+    print msg
+    print "-------------------\n"
+    #message logging
+    s.sendto(msg, (recipient, PORT))
+
+def recvresp(s):
+    response,addr = s.recvfrom(1024)
+    #message logging
+    print "\n-----recieved------"
+    print response 
+    print "-------------------\n"
+    #message logging
+    return addr
+
+def collectFiles():
+    files = [f for f in listdir("MyDrawer/") if isfile(join("MyDrawer/", f))]
+
+    fileString=""
+
+    for f in files:
+        f += fileString + "\n"
+
+    return fileString
+
 HOST= ''
 PORT = 1998            # The same port as used by the server
 s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM) # UDP uses Datagram, but not stream
@@ -73,31 +101,3 @@ while True:
         recvresp(s)
 
 s.close()
-
-def sendthis(s, msg, recipient):
-    PORT = 1998
-    #message logging
-    print "\n------sending------"
-    print msg
-    print "-------------------\n"
-    #message logging
-    s.sendto(msg, (recipient, PORT))
-
-def recvresp(s):
-    response,addr = s.recvfrom(1024)
-    #message logging
-    print "\n-----recieved------"
-    print response 
-    print "-------------------\n"
-    #message logging
-    return addr
-
-def collectFiles():
-    files = [f for f in listdir("MyDrawer/") if isfile(join("MyDrawer/", f))]
-
-    fileString=""
-
-    for f in files:
-        f += fileString + "\n"
-
-    return fileString
