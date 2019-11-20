@@ -25,7 +25,7 @@ def recvresp(s):
     lst = response.split("\n")
     if lst.pop(0)=="message":
         print "-------MESSAGE FROM SERVER-------"
-        print lst.join("\n")
+        print "\n".join(lst)
         print "---------------------------------"
 
     # MESSAGE LOGGING: uncomment to log all recieved messages
