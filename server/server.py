@@ -7,7 +7,7 @@ clientsock.bind((HOST, PORT))
 print "Waiting for packets..."
 
 IPsToFiles = {}
-allFiles = []
+allFiles = {}
 
 while True:  
     data, addr = clientsock.recvfrom(1024)  
@@ -28,7 +28,7 @@ while True:
         # Register the user's files
         for f in dataList:
             IPsToFiles[addr].append(f)
-            allFiles.append(f)
+            allFiles.add(f)
         response = "message\nI got your files. Thanks."
     elif (header == "doyouhave"):
         # Check if I have that file on record

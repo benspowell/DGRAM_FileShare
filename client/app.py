@@ -18,7 +18,7 @@ def recvresp(s):
         response,addr = s.recvfrom(1024)
     except socket.timeout:
         print "socket timed out :("
-        response="" 
+        response = false
     print "\n-----recieved------"
     print response 
     print "-------------------\n"
@@ -33,6 +33,18 @@ def collectFiles():
         fileString += "\n" + f
 
     return fileString
+
+def sendFile(s, filename, recipient):
+    f = open("MyDrawer/"+filename, "rb")
+    fileData = f.read()
+    s.sendto(fileData,(recipient, 1998))
+    f.close
+
+def recvFile(s, filename):
+    f.open("MyDrawer/"+filename, "wb")
+    data, addr = s.recvfrom()
+    f.write(data)
+    f.close
 
 HOST= ''
 PORT = 1998            # The same port as used by the server
@@ -81,7 +93,7 @@ while True:
             readable, writable, exceptional = select.select(inputs, inputs, inputs)
             for i in readable:
                 if i is s:
-                    response, addr = s.recvfrom(1024)
+                    response, addr = s.recvfrom()
                     sendthis(s, "take\n"+"length\n"+"filedata", addr[0])
                 elif i is sys.stdin:
                     command = raw_input()
@@ -109,9 +121,11 @@ while True:
         if (ips.pop(0) == "message"):
             print ips.pop(0)
         else:
-            msg = "giveme\n"+fileiwant
-            sendthis(s,msg,ips.pop(0))
-            recvresp(s)     
+            for ip in ips:
+                msg = "giveme\n"+fileiwant
+                sendthis(s,msg,ip)
+                if recvresp(s):
+                    break
 
     elif (command == "u"): # UPDATE COMMAND: update this user's shared files
         print "\nAll files in your drawer will be shared with the cabinet directory.\n"
