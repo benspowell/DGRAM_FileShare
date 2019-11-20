@@ -26,7 +26,7 @@ def collectFiles():
     fileString=""
 
     for f in files:
-        f += fileString + "\n"
+        fileString += f + "\n"
 
     return fileString
 
